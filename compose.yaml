@@ -1,0 +1,58 @@
+version: '3.13'
+
+services:
+
+  download-models:
+    image: alpine:latest
+    volumes:
+      - models-data:/models
+    command: >
+      sh -c "
+        apk add --no-cache git &&
+        git clone https://github.com/cms-data/RecoBTag-Combined.git /tmp/repo &&
+        rm -rf /models/* &&
+        cp -r /tmp/repo/models/particlenet_AK4_PT /models/ &&
+        rm -rf /tmp/repo
+      "
+
+  triton:
+    image: fastml/triton-torchgeo:22.07-py3-geometric
+    volumes:
+      - models-data:/models
+    command: >
+      /opt/tritonserver/bin/tritonserver
+      --model-repository=/models
+      --log-verbose=0
+    depends_on:
+      download-models:
+        condition: service_completed_successfully
+
+  envoy:
+    image: envoyproxy/envoy:v1.30.9
+    command: ["/usr/local/bin/envoy", "-c", "/etc/envoy/envoy.yaml", "-l", "warn"]
+    volumes:
+      - ./envoy-config.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "8801:8801"
+      - "9901:9901"
+
+  prometheus:
+    image: prom/prometheus
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--log.level=warn"]
+    volumes:
+      - ./prometheus-config.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ./grafana/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./grafana/default-dashboard.json:/var/lib/grafana/dashboards/default-dashboard.json
+    ports:
+      - "3000:3000"
+
+volumes:
+  models-data:
