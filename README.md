@@ -1,10 +1,9 @@
 # Lightweight SuperSONIC deployment with Docker Compose
 
 [SuperSONIC](https://github.com/fastmachinelearning/SuperSONIC) is a server infrastructure designed to implement GPU inference as-a-service in large scientific experiments.
+SuperSONIC was originally designed for deployment on Kubernetes clusters, which made its adoption difficult for users with limited Kubernetes expertise and/or without access to a Kubernetes cluster. 
 
-SuperSONIC was originally designed to be deployed on Kubernetes clusters, which made its adoption difficult for users with limited Kubernetes expertise and/or without access to a Kubernetes cluster. 
-
-This repository provides a lightweight implementation of the SuperSONIC architecture for a local deployment using [Docker Compose](https://docs.docker.com/compose/). Using the instructions given below, one can install start a SuperSONIC server with the [ParticleNet model](https://cms-ml.github.io/documentation/inference/particlenet.html) loaded, and run an example client workflow against it.
+This repository provides a lightweight implementation of the SuperSONIC architecture for a local deployment using [Docker Compose](https://docs.docker.com/compose/). Using the instructions given below, one can launch a SuperSONIC server with the [ParticleNet model](https://cms-ml.github.io/documentation/inference/particlenet.html) loaded, and run an example client workflow against it.
 
 
 ## Pre-requisites
