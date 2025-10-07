@@ -28,10 +28,10 @@ This repository provides a lightweight implementation of the SuperSONIC architec
     This command will use the recipe specified in `compose.yaml` to do the following:
     * Download ParticleNet model from the CMSSW GitHub repository.
     * Download and launch four Docker containers (the containers will be cached and not need to be downloaded on subsequent runs):
-        * Triton Inference Server
-        * Envoy Proxy - exposes gRPC endpoint for inference requests at `localhost:8801`
-        * Prometheus - exposes GUI at `localhost:9090`
-        * Grafana - exposes a monitoring dashboard at `localhost:3000`
+        * **Triton Inference Server**
+        * **Envoy Proxy** - exposes gRPC endpoint for inference requests at `localhost:8801`
+        * **Prometheus** - exposes GUI at `localhost:9090`
+        * **Grafana** - exposes a monitoring dashboard at `localhost:3000`
 
 3. **Open Grafana dashboard** in a web browser at `localhost:3000`.
 
